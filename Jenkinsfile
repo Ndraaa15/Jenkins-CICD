@@ -5,7 +5,7 @@ pipeline {
   stages {
     stage('Clone Repository') {
       steps {
-        git 'https://github.com/your-repo/hello-world-app.git'
+        git 'https://github.com/Ndraaa15/Jenkins-CICD.git'
         }
     }
     
