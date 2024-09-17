@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Clone Repository') {
       steps {
-        git 'https://github.com/Ndraaa15/Jenkins-CICD.git'
+          git branch : 'main', url:  'https://github.com/Ndraaa15/Jenkins-CICD.git'
         }
     }
     
@@ -17,10 +17,18 @@ pipeline {
     
     stage('Run Unit Tests') {
       steps {
+        agent {
+          docker { 
+            image 'golang:1.22' 
+            args '-r GOCACHE=/tmp/go-cache'
+          }
+        }
+
+
         script {
           dockerImage.inside {
             sh 'go mod download'
-            sh 'go test main_test.go'
+            sh 'go test -v .'
           }
         }
       }
