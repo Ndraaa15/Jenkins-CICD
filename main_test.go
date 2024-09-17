@@ -2,17 +2,30 @@ package main
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
 func TestMain(t *testing.T) {
 	go main()
-	resp, err := http.Get("http://localhost:8080/")
+
+	req, err := http.NewRequest("GET", "/", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.StatusCode != http.StatusOK {
-		t.Errorf("Status code for / is wrong. Have: %d, want: %d.", resp.StatusCode, http.StatusOK)
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(HelloWorld)
+
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
 	}
-	defer resp.Body.Close()
+
+	expected := "Hello, World!"
+	if rr.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
+	}
+
 }
