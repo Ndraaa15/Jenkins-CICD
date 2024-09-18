@@ -9,8 +9,8 @@ import (
 
 func main() {
 	http.HandleFunc("/", HelloWorld)
-	log.Printf("Starting server on port 8080")
-	http.ListenAndServe(":8080", nil)
+	log.Printf("Starting server on port 8000")
+	http.ListenAndServe(":8000", nil)
 }
 
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
